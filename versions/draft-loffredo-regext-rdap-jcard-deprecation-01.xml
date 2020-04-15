@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE rfc SYSTEM "http://xml.resource.org/authoring/rfc2629.dtd"
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd"
 [
   <!ENTITY RFC2119 PUBLIC ''
    'http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml'>
@@ -274,101 +274,74 @@
           &quot;vcardArray&quot; property in the RDAP response.</t>
       </list></t>
 
-      <t>The use of the above parameters is furtherly explained in <xref target="transition"/>.</t>
+      <t>These parameters are furtherly explained in <xref target="transition"/>.</t>
     </section>
 
     </section>
 
     <section anchor="transition" title="Transition Considerations">
 
-      <section anchor="deprecation-best-practices" title="Best Practices for deprecating REST
-        API features">
-        <t>Before introducing the basic principles which guide the deprecation process, it
-          may be useful to clarify the terms "deprecation" and "sunsetting":</t>
-        <t><list style="symbols">
-          <t>"Deprecating" an API means making it is unusable in its current form for the
-            purpose intended. This usually means that a new version has been created, or the API
-            provider no longer intends to support it.</t>
-          <t>Sunsetting is merely the period of time leading up to a deprecation. It is a period
-            of limited support, while deprecation is the period in which support officially
-            ends. In the meantime, the support for an alternate feature replacing the old one
-            might be provided. A sunsetting plan can be set up months or even years in advance
-            of the deprecation itself.</t>
-        </list></t>
+      <section anchor="rdap-features-supporting-transition" title="RDAP Features Supporting a Transition Process">
+        <section title="Notices and Link Relationships">
+          <t>RDAP allows servers to communicate service information to clients through notices.
+          An RDAP response may contain one or more notice objects (<xref target="RFC7483"/>, Section
+          4.3), each of which may include a set of link objects, which can be used to provide clients
+          with references and documentation. These link objects may have a "rel" property which defines
+          the relationship type, as described in <xref target="RFC8288"/>, Section 4. The transition
+          process outlined in this document uses two types of link relation:</t>
 
-        <t>That being said, here are a few guidelines to deprecate a REST API feature:</t>
-
-        <t>
-          <list style="symbols">
-            <t>"Communicating": REST API providers should announce the intended deprecation
-              communicating the timeline and any other helpful information.</t>
-            <t>"Planning a long enough sunset period": a good sunset period is important as it
-              gives API consumers time to work on their clients. Such a period could consist of
-              API updates to fit the future version.</t>
-            <t>"Providing alternatives": when entering the sunset period, there may be a
-              provision for elements like redirect URIs, migration endpoints, etc., but, at the
-              same time, the API might still respond to old fashioned requests in order to
-              guarantee backward compatibility for a limited period.</t>
-          </list>
-        </t>
-      </section>
-
-      <section anchor="rdap-features-supporting-deprecation" title="RDAP Features Supporting a
-        Deprecation Process">
-        <t>RDAP enables servers to communicate service information to clients through notices. A
-          notice can include a set of links which can be used to provide clients with references
-          and documentation. For the purpose of this document, two link relation types are used:</t>
-
-        <t><list style="symbols">
-          <t>"deprecation" as described in <xref target="draft-dalal-deprecation-header" />;</t>
-          <t>"alternate" as described in <xref target="RFC8288" />.</t>
-        </list></t>
-
-        <t>The information about the specifications used in the construction of the response is
-          also described by the "rdapConformance" tags.</t>
-
-        <t>Clients are able to ask servers for RDAP features by using appropriate query
-          parameters as described in <xref target="RFC7482" />.</t>
-      </section>
-
-      <section anchor="jcard-deprecation-procedure" title="jCard Deprecation Procedure">
-        <t>The procedure for jCard to JSCard transition consists of four contiguous stages, each
-          one corresponding to as many alternatives in providing the contact card. During the
-          procedure, the presence of "jscard_level_0" tag in the rdapConformance array means
-          that JSCard is returned instead of jCard. The time format used in notifying clients
-          about this procedure is defined in <xref target="RFC3339" />.</t>
-
-        <section anchor="jcard-deprecation-procedure-stages" title="Stages">
-          <t>Here in the following the four stages are reported in detail:</t>
-
-          <t><list style="empty">
-            <t>Stage 1 - only jCard provided</t>
-            <t>This stage corresponds to providing jCard as default contact card (<xref
-              target="RFC7483" />). The RDAP server is not able to provide an alternate contact
-              card. The rdapConformance array does not contain the "jscard_level_0" tag.<vspace
-              blankLines='1' /></t>
-
-            <t>Stage 2 - jCard sunset</t>
-            <t>This stage corresponds to providing jCard as default contact card but the RDAP
-              server is able to alternatively return JSCard if the client sets the query
-              parameter "jscard" to 1/true/yes. The rdapConformance array contains the
-              "jscard_level_0" tag if JSCard is requested.</t>
-
-            <t>The RDAP server is recommended to return a notice titled "jCard sunset end". Such
-              a notice should include a description reporting the jCard sunset end time and two
-              links:
-
-            <list style="symbols">
-              <t>"deprecation": a link to a URI-identified resource documenting the jCard
-                deprecation;</t>
-              <t>"alternate": if JSCard is not requested, a link to the JSCard version of same
-                resource as identified by the current query string plus the parameter "jscard"
-                set to 1/true/yes (<xref target="stage2-example1" />); otherwise, only the
-                "deprecation" link is provided (<xref target="stage2-example2" />).</t>
-            </list></t>
+          <t><list style="symbols">
+            <t>"deprecation", as described in <xref target="draft-dalal-deprecation-header" />;</t>
+            <t>"alternate", as described in <xref target="RFC8288" />.</t>
           </list></t>
+        </section>
 
-          <figure anchor="stage2-example1" title="jCard sunset - JSCard not requested"><artwork xml:space="preserve">
+        <section title="rdapConformance Property">
+          <t>The information about the specifications used in the construction of the response is
+            also described by the strings which appear in the "rdapConformance" property of the RDAP
+            response.</t>
+        </section>
+
+        <section title="Query Parameters">
+          <t>Clients are able to ask servers to use specific RDAP features by using appropriate query
+            parameters as described in <xref target="RFC7482" />.</t>
+        </section>
+      </section>
+
+      <section anchor="jcard-transition-procedure" title="Transition Procedure">
+        <t>The procedure for jCard to JSCard transition consists of four contiguous stages.
+          During the procedure, the presence of "jscard_level_0" tag in the rdapConformance array
+          indicates that JSCard is returned instead of jCard. The time format used to notify
+          clients about this procedure is defined in <xref target="RFC3339" />.</t>
+
+        <section anchor="jcard-deprecation-procedure-stages" title="Transition Stages">
+
+            <section title="Stage 1: only jCard provided">
+              <t>This stage corresponds to providing jCard as default contact card (<xref
+                target="RFC7483" />). The RDAP server is not able to provide an alternate contact
+                card. The rdapConformance array MUST NOT contain the "jscard_level_0" tag.</t>
+            </section>
+
+            <section title="Stage 2: jCard sunset">
+              <t>During this stage, the server uses jCard by default, but the RDAP server will
+                return JSCard if the client sets the query parameter "jscard" to a true value.
+                The rdapConformance array MUST contain the "jscard_level_0" tag if JSCard is
+                requested.</t>
+
+              <t>The RDAP server SHOULD include a notice titled "jCard sunset end". Such
+                a notice should include a description reporting the jCard sunset end time and two
+                links:</t>
+
+              <t><list style="symbols">
+                <t>"deprecation": a link to a URI-identified resource documenting the jCard
+                  deprecation;</t>
+                <t>"alternate": if JSCard is not requested, a link to the JSCard version of same
+                  resource as identified by the current query string plus the parameter "jscard"
+                  set to a true value (<xref target="stage2-example1" />); otherwise, only the
+                  "deprecation" link is provided (<xref target="stage2-example2" />).</t>
+              </list></t>
+
+             <figure anchor="stage2-example1" title="jCard sunset - JSCard not requested"><artwork xml:space="preserve">
 <![CDATA["notices": [
   {
     "title": "jCard sunset end",
@@ -389,7 +362,7 @@
   }
 ]
 ]]></artwork></figure>
-          <figure anchor="stage2-example2" title="jCard sunset - JSCard requested"><artwork xml:space="preserve">
+             <figure anchor="stage2-example2" title="jCard sunset - JSCard requested"><artwork xml:space="preserve">
 <![CDATA["notices": [
   {
     "title": "jCard sunset end",
@@ -405,17 +378,19 @@
   }
 ]
 ]]></artwork></figure>
-          <t><list style="empty">
-            <t>Stage 3 - jCard deprecation</t>
-            <t>This stage corresponds to the provisioning of JSCard as default contact card but
-              the RDAP server is able to alternatively return jCard if the client sets the query
-              parameter "jcard" to 1/true/yes. The rdapConformance array contains the
-              "jscard_level_0" tag unless jCard is requested. The "jscard" query parameter is
-              ignored.</t>
-            <t>The RDAP server is recommended to return a notice titled "jCard deprecation end".
+          </section>
+
+          <section title="Stage 3: jCard deprecation">
+            <t>This stage corresponds to the provisioning of JSCard by default, but
+              the RDAP will return jCard if the client sets the query parameter "jcard" to a
+              true value. The rdapConformance array contains the "jscard_level_0" tag unless
+              jCard is requested. The "jscard" query parameter is ignored.</t>
+
+            <t>The RDAP server SHOULD to return a notice titled "jCard deprecation end".
               Such a notice should include a description reporting the jCard deprecation end
-              time and two links: 
-            <list style="symbols">
+              time and two links:</t>
+
+            <t><list style="symbols">
               <t>"deprecation": a link to a URI-identified resource documenting the jCard
                 deprecation;</t>
               <t>"alternate": if jCard is not requested, a link to the jCard version of the same
@@ -424,8 +399,8 @@
                 JSCard version of the same resource as identified by the current query string
                 without the parameter "jcard" (<xref target="stage3-example2" />).</t>
             </list></t>
-          </list></t>
-          <figure anchor="stage3-example1" title="jCard deprecation - jCard not requested"><artwork xml:space="preserve">
+
+            <figure anchor="stage3-example1" title="jCard deprecation - jCard not requested"><artwork xml:space="preserve">
 <![CDATA["notices": [
   {
     "title": "jCard deprecation end",
@@ -469,16 +444,14 @@
   }
 ]
 ]]></artwork></figure>
-          <t>
-            <list style="empty">
-              <t>Stage 4 - jCard deprecated</t>
-              <t>This stage corresponds to providing JSCard as default contact card. The RDAP
-                server is not able to provide an alternate contact card. The rdapConformance
-                array always contains "jscard_level_0" tag. The RDAP server doesn't include any
-                notice about the jCard deprecation process. Both "jscard" and "jcard" query
-                parameters are ignored.</t>
-            </list>
-          </t>
+        </section>
+
+        <section title="Stage 4: jCard deprecated">
+          <t>This stage corresponds to providing JSCard as default contact card. The RDAP
+            server is not able to provide an alternate contact card. The rdapConformance
+            array always contains "jscard_level_0" tag. The RDAP server doesn't include any
+            notice about the jCard deprecation process. Both "jscard" and "jcard" query
+            parameters are ignored.</t>
         </section>
 
         <section anchor="jcard-deprecation-procedure-length" title="Length">
@@ -490,20 +463,20 @@
             requirements.</t>
         </section>
 
+
         <section anchor="jcard-deprecation-procedure-goals" title="Goals">
           <t>The procedure described in this document achieves the following goals:</t>
-          <t>
-            <list style="symbols">
-              <t>only one contact representation would be included in the response;</t>
-              <t>the response would always be compliant to <xref target="RFC7483"/>;</t>
-              <t>clients would be informed about the transition timeline;</t>
-              <t>the backward compatibility would be guaranteed throughout the transition;</t>
-              <t>servers and clients could execute their transitions independently.</t>
-            </list>
-          </t>
+          <t><list style="symbols">
+            <t>only one contact representation would be included in the response;</t>
+            <t>the response would always be compliant to <xref target="RFC7483"/>;</t>
+            <t>clients would be informed about the transition timeline;</t>
+            <t>the backward compatibility would be guaranteed throughout the transition;</t>
+            <t>servers and clients could execute their transitions independently.</t>
+            </list></t>
         </section>
       </section>
     </section>
+  </section>
 
     <section anchor="impl-status" title="Implementation Status">
       <t>NOTE: Please remove this section and the reference to RFC 7942 prior to publication as
