@@ -145,7 +145,7 @@
       <t>Entity objects in RDAP responses MAY include a "jscard" property whose value is a
         JSCard object instead of the "vCardArray" property defined in <xref target="RFC7483"/>.</t>
       <t>Servers returning the &quot;jscard&quot; property in their response MUST include
-        &quot;jscard_level_0&quot; in the "rdapConformance" array.</t>
+        &quot;jscard&quot; in the "rdapConformance" array.</t>
       <t>An example of an RDAP response containing a "jscard" property is shown in <xref target="jscard-example"/>.
       The "jscard" object in this example has been converted from the example included in section
       5.1 of <xref target="RFC7483"/>.</t>
@@ -154,7 +154,7 @@
    {
       "rdapConformance": [
          "rdap_level_0",
-         "jscard_level_0"
+         "jscard"
       ],
       "objectClassName" : "entity",
       "handle":"XXXX",
@@ -310,7 +310,7 @@
 
       <section anchor="jcard-transition-procedure" title="Transition Procedure">
         <t>The procedure for jCard to JSCard transition consists of four contiguous stages.
-          During the procedure, the presence of "jscard_level_0" tag in the rdapConformance array
+          During the procedure, the presence of "jscard" tag in the rdapConformance array
           indicates that JSCard is returned instead of jCard. The time format used to notify
           clients about this procedure is defined in <xref target="RFC3339" />.</t>
 
@@ -319,13 +319,13 @@
             <section title="Stage 1: only jCard provided">
               <t>This stage corresponds to providing jCard as default contact card (<xref
                 target="RFC7483" />). The RDAP server is not able to provide an alternate contact
-                card. The rdapConformance array MUST NOT contain the "jscard_level_0" tag.</t>
+                card. The rdapConformance array MUST NOT contain the "jscard" tag.</t>
             </section>
 
             <section title="Stage 2: jCard sunset">
               <t>During this stage, the server uses jCard by default, but the RDAP server will
                 return JSCard if the client sets the query parameter "jscard" to a true value.
-                The rdapConformance array MUST contain the "jscard_level_0" tag if JSCard is
+                The rdapConformance array MUST contain the "jscard" tag if JSCard is
                 requested.</t>
 
               <t>The RDAP server SHOULD include a notice titled "jCard sunset end". Such
@@ -383,7 +383,7 @@
           <section title="Stage 3: jCard deprecation">
             <t>This stage corresponds to the provisioning of JSCard by default, but
               the RDAP will return jCard if the client sets the query parameter "jcard" to a
-              true value. The rdapConformance array contains the "jscard_level_0" tag unless
+              true value. The rdapConformance array contains the "jscard" tag unless
               jCard is requested. The "jscard" query parameter is ignored.</t>
 
             <t>The RDAP server SHOULD to return a notice titled "jCard deprecation end".
@@ -449,7 +449,7 @@
         <section title="Stage 4: jCard deprecated">
           <t>This stage corresponds to providing JSCard as default contact card. The RDAP
             server is not able to provide an alternate contact card. The rdapConformance
-            array always contains "jscard_level_0" tag. The RDAP server doesn't include any
+            array always contains "jscard" tag. The RDAP server doesn't include any
             notice about the jCard deprecation process. Both "jscard" and "jcard" query
             parameters are ignored.</t>
         </section>
@@ -602,7 +602,9 @@
           <t>Changed the names of the transition stages 1 and 2</t>
           <t>Corrected <xref target="stage2-example1"/>, <xref target="stage3-example1"/>,
           <xref target="stage3-example2"/></t>
-         </list></t>
+          <t>Changed the rdapConformance tag &quot;jscard_level_0&quot; to &quot;jscard&quot;</t>
+          <t>Removed the &quot;Best Practices for deprecating a REST API features&quot; section</t>
+        </list></t>
       </section>
 
     </section>
