@@ -74,32 +74,33 @@
     <keyword>JSContact</keyword>
     
     <abstract>
-      <t>This document describes how RDAP servers can represent entity contact information in
+      <t>This document describes an RDAP extension which represents entity contact information in
       JSON responses using JSContact.</t>
     </abstract>
   </front>
 
   <middle>
     <section title="Introduction">
-      <t>This document specifies how RDAP servers can use JSContact (<xref target="draft-ietf-jmap-jscontact"/>)
+      <t>This document specifies an extension to the Registration Data Access Protocol (RDAP)
+      that allows RDAP servers to use JSContact (<xref target="draft-ietf-jmap-jscontact"/>)
       to represent the contact information associated with entities in RDAP responses, instead
       of jCard (<xref target="RFC7095"/>). It also describes the process by which an RDAP server
-      can migrate from jCard to JSContact. RDAP query and response extensions are defined to
-      accomplish the migration.</t>
+      can transition from jCard to JSContact. RDAP query and response extensions are defined to
+      facilitate the transition process.</t>
 
       <section title="Rationale">
         <t>According to the feedback from RDAP Pilot Working Group (<xref target="RDAP-PILOT-WG"/>,
         a group of RDAP server implementers representing registries and registrars of generic
-        TLDs), the most commonly raised implementation concern, for both servers and clients
-        related to the use of jCard (<xref target="RFC7095"/>) to represent the contact
-        information associated with entities. Working Group members reported jCard to be
+        TLDs), the most commonly raised implementation concern, for both servers and client
+        implementers, related to the use of jCard (<xref target="RFC7095"/>) to represent the
+        contact information associated with entities. Working Group members reported jCard to be
         unintuitive, complicated to implement for both clients and servers, and incompatible
         with best practices for RESTful APIs.</t>
 
         <t>JSContact (<xref target="draft-ietf-jmap-jscontact"/>) provides a simpler and more
         efficient representation for contact information. In addition, it provides a means to
-        represent internationalised and unstructured contact information which cannot currently
-        be represented using jCard. Support for internationalised contact information has been
+        represent internationalised and unstructured contact information which cannot be
+        represented using jCard. Support for internationalised contact information has been
         recognised being necessary to facilitate the future internationalisation of registration
         data directory services.</t>
       </section>
@@ -144,9 +145,10 @@
       <t>Entity objects in RDAP responses MAY include a "jscard" property whose value is a
         JSCard object instead of the "vCardArray" property defined in <xref target="RFC7483"/>.</t>
       <t>Servers returning the &quot;jscard&quot; property in their response MUST include
-        &quot;jscard_level_0&quot; in the rdapConformance array.</t>
+        &quot;jscard_level_0&quot; in the "rdapConformance" array.</t>
       <t>An example of an RDAP response containing a "jscard" property is shown in <xref target="jscard-example"/>.
-      It is obtained by converting the example included in section 5.1 of <xref target="RFC7483"/>.</t>
+      The "jscard" object in this example has been converted from the example included in section
+      5.1 of <xref target="RFC7483"/>.</t>
 
 <figure anchor="jscard-example" title="Example of &quot;jscard&quot; in RDAP response"><artwork><![CDATA[
    {
@@ -258,7 +260,7 @@
    }
 ]]></artwork></figure>
 
-    <section anchor="rdap-query-parameters-specification" title="RDAP Query Parameters Specification">
+    <section anchor="rdap-query-parameters-specification" title="RDAP Query Parameters">
 
       <t>Two new query parameters are defined for the purpose of this document.</t>
 
@@ -266,9 +268,9 @@
         target="RFC7482"/>. They are as follows:</t>
 
       <t><list style="symbols">
-        <t>&quot;jscard&quot;: a boolean value that allows a client to obtain the
+        <t>&quot;jscard&quot;: a boolean value that allows a client to request the
           &quot;jscard&quot; property in the RDAP response;</t>
-        <t>&quot;jcard&quot;: a boolean value that allows a client to obtain the
+        <t>&quot;jcard&quot;: a boolean value that allows a client to request the
           &quot;vcardArray&quot; property in the RDAP response.</t>
       </list></t>
 
@@ -279,20 +281,19 @@
 
     <section anchor="transition" title="Transition Considerations">
 
-      <section anchor="deprecation-best-practices" title="Best Practices for deprecating a REST
+      <section anchor="deprecation-best-practices" title="Best Practices for deprecating REST
         API features">
-        <t>Deprecation of a REST API feature is a process that should be executed as smartly as
-          possible. Before introducing the basic principles guiding a deprecation process, it
-          could be useful to clarify about the terms deprecation and sunsetting:</t>
+        <t>Before introducing the basic principles which guide the deprecation process, it
+          may be useful to clarify the terms "deprecation" and "sunsetting":</t>
         <t><list style="symbols">
-          <t>Deprecating an API means it is not usable in its current form for the purpose
-            intended. This usually means that a new version has been created, or the API
+          <t>"Deprecating" an API means making it is unusable in its current form for the
+            purpose intended. This usually means that a new version has been created, or the API
             provider no longer intends to support it.</t>
-          <t>Sunsetting is merely a period of time leading up to a deprecation. It is a period
+          <t>Sunsetting is merely the period of time leading up to a deprecation. It is a period
             of limited support, while deprecation is the period in which support officially
             ends. In the meantime, the support for an alternate feature replacing the old one
             might be provided. A sunsetting plan can be set up months or even years in advance
-            of the deprecation announcement.</t>
+            of the deprecation itself.</t>
         </list></t>
 
         <t>That being said, here are a few guidelines to deprecate a REST API feature:</t>
@@ -331,7 +332,7 @@
       </section>
 
       <section anchor="jcard-deprecation-procedure" title="jCard Deprecation Procedure">
-        <t>The procedure for jCard to JSCard migration consists of four contiguous stages, each
+        <t>The procedure for jCard to JSCard transition consists of four contiguous stages, each
           one corresponding to as many alternatives in providing the contact card. During the
           procedure, the presence of "jscard_level_0" tag in the rdapConformance array means
           that JSCard is returned instead of jCard. The time format used in notifying clients
