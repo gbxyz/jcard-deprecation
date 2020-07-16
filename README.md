@@ -91,17 +91,25 @@ While the jCard element in the RDAP response is named "vcardArray", its JSCard c
        "joe.user@example.com"
      ],
      ["geo", {
-       "type":"work"
-     }, "uri", "geo:46.772673,-71.282945"],
+       "type":"work"}, 
+       "uri", 
+       "geo:46.772673,-71.282945"
+     ],
      ["key",
        { "type":"work" },
        "uri",
        "http://www.example.com/joe.user/joe.asc"
      ],
-     ["tz", {},
-       "utc-offset", "-05:00"],
-     ["url", { "type":"home" },
-       "uri", "http://example.org"]
+     ["tz", 
+       {},
+       "utc-offset", 
+       "-05:00"
+     ],
+     ["url", 
+       { "type":"home" },
+       "uri", 
+       "http://example.org"
+     ]
    ]
  ]
 ```
@@ -112,8 +120,8 @@ While the jCard element in the RDAP response is named "vcardArray", its JSCard c
     "fullName": { "value": "Joe User" },
     "kind": "individual",
     "preferredContactLanguages": {
-      "fr": { "preference": 1 },
-      "en": { "preference": 2 }
+      "fr": [{ "preference": 1 }],
+      "en": [{ "preference": 2 }]
     },
     "organization": [ { "value": "Example" } ],
     "jobTitle": [ { "value": "Research Scientist" } ],
@@ -128,7 +136,7 @@ While the jCard element in the RDAP response is named "vcardArray", its JSCard c
                      "postcode": "G1V 2M2",
                      "country": "Canada",
                      "coordinates": "geo:46.772673,-71.282945",
-                     "timeZone": "Canada/Eastern"
+                     "timeZone": "Etc/GMT+5"
                    },
                    {
                      "context": "private",
@@ -222,8 +230,8 @@ While the jCard element in the RDAP response is named "vcardArray", its JSCard c
   ],
   "kind": "individual",
   "preferredContactLanguages": {
-     "ja": { "preference": 1 },
-     "en": { "preference": 2 }
+     "ja": [{ "preference": 1 }],
+     "en": [{ "preference": 2 }]
   }
 }
 ```
@@ -245,7 +253,7 @@ While the jCard element in the RDAP response is named "vcardArray", its JSCard c
        "text",
        "Taiwan Fixed Network CO.,LTD."
     ],
-    [ "kind", {}, "text", "individual" ],
+    [ "kind", {}, "text", "org" ],
     [ "adr",
        { "label": "8F., No.172-1, Sec.2, Ji-Lung Rd," },
        "text",
@@ -266,7 +274,7 @@ While the jCard element in the RDAP response is named "vcardArray", its JSCard c
       "zh-Hant-TW": "台灣固網股份有限公司"
     }
   },
-  "kind": "individual",
+  "kind": "org",
   "addresses": [
                  {
                    "fullAddress": {

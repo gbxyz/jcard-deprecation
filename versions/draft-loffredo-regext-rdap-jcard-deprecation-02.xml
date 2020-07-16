@@ -31,7 +31,7 @@
 <?rfc symrefs="yes"?>
 <?rfc iprnotified="no"?>
 
-<rfc category="std" docName="draft-loffredo-regext-rdap-jcard-deprecation-01" ipr="trust200902">
+<rfc category="std" docName="draft-loffredo-regext-rdap-jcard-deprecation-02" ipr="trust200902">
   <front>
     <title abbrev="Using JSContact in RDAP">Using JSContact in Registration Data Access Protocol
     (RDAP) JSON Responses</title>
@@ -88,7 +88,7 @@
       can transition from jCard to JSContact. RDAP query and response extensions are defined to
       facilitate the transition process.</t>
 
-      <section title="Rationale">
+      <section anchor="Rationale" title="Rationale">
         <t>According to the feedback from RDAP Pilot Working Group (<xref target="RDAP-PILOT-WG"/>,
         a group of RDAP server implementers representing registries and registrars of generic
         TLDs), the most commonly raised implementation concern, for both servers and client
@@ -98,9 +98,8 @@
         with best practices for RESTful APIs.</t>
 
         <t>JSContact (<xref target="draft-ietf-jmap-jscontact"/>) provides a simpler and more
-        efficient representation for contact information. In addition, it provides a means to
-        represent internationalised and unstructured contact information which cannot be
-        represented using jCard. Support for internationalised contact information has been
+        efficient representation for contact information. In addition, similarly to jCard, it provides a means to
+        represent internationalised and unstructured contact information. Support for internationalised contact information has been
         recognised being necessary to facilitate the future internationalisation of registration
         data directory services.</t>
       </section>
@@ -616,6 +615,11 @@
           <t>Changed the rdapConformance tag &quot;jscard_level_0&quot; to &quot;jscard&quot;</t>
           <t>Removed the &quot;Best Practices for deprecating a REST API features&quot; section,
             but added a useful reference.</t>
+        </list></t>
+      </section>
+      <section title="Change from 01 to 02">
+        <t><list style="numbers">
+          <t>Removed the sentence &quot;which cannot be represented using jCard&quot; in <xref target="Rationale"/>.</t>
         </list></t>
       </section>
 
